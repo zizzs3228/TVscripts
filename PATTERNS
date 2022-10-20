@@ -1,0 +1,24 @@
+// © zizzs
+//@version=5
+indicator("sindicatecryptochat", overlay = true, max_lines_count = 500,max_bars_back = 200, max_labels_count = 500)
+var a = array.new_line()
+for i = 5 to 365
+    if barstate.islast
+        if (high[i]<high[i+1] and high[i+1]<high[i+2] and high[i+2]>high[i+3] and high[i+3]>high[i+4])
+            array.push(a, line.new(bar_index[i+2], high[i+2], bar_index[i+2]+1, high[i+2],extend=extend.right))
+        if (low[i]>low[i+1] and low[i+1]>low[i+2] and low[i+2]<low[i+3] and low[i+3]<low[i+4])
+            array.push(a, line.new(bar_index[i+2], low[i+2], bar_index[i+2]+1, low[i+2],extend=extend.right,color=color.red))
+            
+for j = 0 to 300
+    if barstate.islast
+        for i = 0 to array.size(a)-1
+            line = array.get(a, i)
+            price = line.get_price(line, bar_index)
+            //if (high[j]>price+0.00000001 and close[j]<price and open[j]<price)
+                //label.new(bar_index[j], high[j], text="Однобаровый", size = size.tiny, style = label.style_arrowdown,textcolor = color.green)
+            if (low[j]<price-0.00000001 and close[j]>price and open[j]>price and high[j]>price)
+                label.new(bar_index[j], low[j], text="Однобаровый", size = size.tiny, style = label.style_arrowup, textcolor = color.red)
+            //if (open[j+1]<price+0.0000001 and close[j+1]>price and open[j]>price and close[j]<price)
+                //label.new(bar_index[j], high[j], text="Двухбаровый", size = size.tiny, style = label.style_arrowdown, textcolor = color.green)
+            //if (open[j+1]>price-0.0000001 and close[j+1]<price and open[j]<price and close[j]>price)
+                //label.new(bar_index[j], low[j], text="Двухбаровый", size = size.tiny, style = label.style_arrowup, textcolor = color.red)
