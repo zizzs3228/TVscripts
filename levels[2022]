@@ -1,0 +1,11 @@
+// © zizzs
+//@version=5
+indicator("sueta", overlay = true, max_lines_count = 500)
+days = input.int(defval = 365, minval = 5, step = 5)
+if (timeframe.isdaily or timeframe.isweekly or timeframe.ismonthly)
+    for i = 5 to days
+        if barstate.islast
+            if (high[i]<high[i+1] and high[i+1]<high[i+2] and high[i+2]>high[i+3] and high[i+3]>high[i+4] )
+                line.new(bar_index[i+2], high[i+2], bar_index[i+2]+1, high[i+2],extend=extend.right, style = line.style_dotted)
+            if (low[i]>low[i+1] and low[i+1]>low[i+2] and low[i+2]<low[i+3] and low[i+3]<low[i+4] )
+                line.new(bar_index[i+2], low[i+2], bar_index[i+2]+1, low[i+2],extend=extend.right, style = line.style_dotted)
